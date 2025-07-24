@@ -31,7 +31,7 @@ public class JwtUtil {
 
     public boolean isValidToken(String token) {
         Claims claims = getClaims(token);
-        return claims.getExpiration().before(new Date());
+        return !claims.getExpiration().before(new Date());
     }
 
     public String getUsername(String token) {
