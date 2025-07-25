@@ -1,7 +1,7 @@
 package csa.service.security;
 
-import csa.dto.UserLoginRequestDto;
-import csa.dto.UserLoginResponseDto;
+import csa.dto.user.UserLoginRequestDto;
+import csa.dto.user.UserLoginResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

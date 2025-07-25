@@ -1,8 +1,8 @@
 package csa.controller;
 
-import csa.dto.UserResponseWithRolesDto;
-import csa.dto.UserUpdateProfileRequestDto;
-import csa.dto.UserUpdateRolesRequestDto;
+import csa.dto.user.UserResponseWithRolesDto;
+import csa.dto.user.UserUpdateProfileRequestDto;
+import csa.dto.user.UserUpdateRolesRequestDto;
 import csa.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package csa.validation;
 
-import csa.dto.UserRegRequestDto;
+import csa.dto.user.UserRegRequestDto;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

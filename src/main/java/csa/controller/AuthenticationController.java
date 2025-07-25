@@ -1,9 +1,9 @@
 package csa.controller;
 
-import csa.dto.UserLoginRequestDto;
-import csa.dto.UserLoginResponseDto;
-import csa.dto.UserRegRequestDto;
-import csa.dto.UserResponseDto;
+import csa.dto.user.UserLoginRequestDto;
+import csa.dto.user.UserLoginResponseDto;
+import csa.dto.user.UserRegRequestDto;
+import csa.dto.user.UserResponseDto;
 import csa.exception.RegistrationException;
 import csa.service.security.AuthenticationService;
 import csa.service.user.UserService;

@@ -1,4 +1,4 @@
-package csa.dto;
+package csa.dto.user;
 
 import lombok.Data;
 

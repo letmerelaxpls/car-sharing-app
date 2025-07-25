@@ -1,4 +1,4 @@
-package csa.dto;
+package csa.dto.user;
 
 import csa.validation.PasswordMatch;
 import jakarta.validation.constraints.Email;

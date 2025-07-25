@@ -1,10 +1,10 @@
 package csa.service.user;
 
-import csa.dto.UserRegRequestDto;
-import csa.dto.UserResponseDto;
-import csa.dto.UserResponseWithRolesDto;
-import csa.dto.UserUpdateProfileRequestDto;
-import csa.dto.UserUpdateRolesRequestDto;
+import csa.dto.user.UserRegRequestDto;
+import csa.dto.user.UserResponseDto;
+import csa.dto.user.UserResponseWithRolesDto;
+import csa.dto.user.UserUpdateProfileRequestDto;
+import csa.dto.user.UserUpdateRolesRequestDto;
 import csa.exception.EntityNotFoundException;
 import csa.exception.RegistrationException;
 import csa.mapper.UserMapper;

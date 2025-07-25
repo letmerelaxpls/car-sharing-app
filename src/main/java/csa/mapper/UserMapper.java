@@ -1,10 +1,10 @@
 package csa.mapper;
 
 import csa.config.MapperConfig;
-import csa.dto.UserRegRequestDto;
-import csa.dto.UserResponseDto;
-import csa.dto.UserResponseWithRolesDto;
-import csa.dto.UserUpdateProfileRequestDto;
+import csa.dto.user.UserRegRequestDto;
+import csa.dto.user.UserResponseDto;
+import csa.dto.user.UserResponseWithRolesDto;
+import csa.dto.user.UserUpdateProfileRequestDto;
 import csa.model.User;
 import java.util.stream.Collectors;
 import org.mapstruct.AfterMapping;
