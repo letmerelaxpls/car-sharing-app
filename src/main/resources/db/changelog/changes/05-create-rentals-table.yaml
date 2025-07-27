@@ -27,7 +27,7 @@ databaseChangeLog:
                   name: actual_return_date
                   type: DATE
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: car_id
                   type: bigint
@@ -36,6 +36,12 @@ databaseChangeLog:
               - column:
                   name: user_id
                   type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: bit
+                  defaultValue: 1
                   constraints:
                     nullable: false
 
