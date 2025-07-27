@@ -1,12 +1,12 @@
 package csa.dto.rental;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.LocalDate;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 import lombok.Data;
 
 @Data
-public class RentalSetARDDto {
+public class RentalSetActualReturnDateDto {
     @NotNull
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate actualReturnDate;

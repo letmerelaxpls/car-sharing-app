@@ -2,7 +2,7 @@ package csa.controller;
 
 import csa.dto.rental.RentalCreateRequestDto;
 import csa.dto.rental.RentalResponseDto;
-import csa.dto.rental.RentalSetARDDto;
+import csa.dto.rental.RentalSetActualReturnDateDto;
 import csa.service.rental.RentalService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,8 @@ public class RentalController {
     @PostMapping("/{rentalId}/return")
     @PreAuthorize("hasRole('ADMIN')")
     public RentalResponseDto setActualReturnDate(
-            @PathVariable Long rentalId, @RequestBody @Valid RentalSetARDDto requestDto) {
+            @PathVariable Long rentalId,
+            @RequestBody @Valid RentalSetActualReturnDateDto requestDto) {
         return rentalService.setActualReturnDate(rentalId, requestDto);
     }
 

@@ -2,7 +2,7 @@ package csa.service.rental;
 
 import csa.dto.rental.RentalCreateRequestDto;
 import csa.dto.rental.RentalResponseDto;
-import csa.dto.rental.RentalSetARDDto;
+import csa.dto.rental.RentalSetActualReturnDateDto;
 import csa.exception.EntityNotFoundException;
 import csa.exception.RentalException;
 import csa.mapper.RentalMapper;
@@ -53,7 +53,8 @@ public class RentalServiceImpl implements RentalService {
 
     @Transactional
     @Override
-    public RentalResponseDto setActualReturnDate(Long rentalId, RentalSetARDDto requestDto) {
+    public RentalResponseDto setActualReturnDate(
+            Long rentalId, RentalSetActualReturnDateDto requestDto) {
         Rental rental = rentalRepository.findWithCarById(rentalId).orElseThrow(() ->
                 new EntityNotFoundException("Could not find Rental with id: " + rentalId));
         Car car = rental.getCar();

@@ -3,7 +3,7 @@ package csa.mapper;
 import csa.config.MapperConfig;
 import csa.dto.rental.RentalCreateRequestDto;
 import csa.dto.rental.RentalResponseDto;
-import csa.dto.rental.RentalSetARDDto;
+import csa.dto.rental.RentalSetActualReturnDateDto;
 import csa.model.Car;
 import csa.model.Rental;
 import csa.model.User;
@@ -40,5 +40,5 @@ public interface RentalMapper {
         responseDto.setUserId(rental.getUser().getId());
     }
 
-    void setActualReturnDate(@MappingTarget Rental rental, RentalSetARDDto requestDto);
+    void setActualReturnDate(@MappingTarget Rental rental, RentalSetActualReturnDateDto requestDto);
 }
