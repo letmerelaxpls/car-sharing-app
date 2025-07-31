@@ -22,4 +22,7 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     Page<Rental> findAllByUserIdAndIsActive(@Param("userId") Long userId,
                                             @Param("isActive") Boolean isActive,
                                             Pageable pageable);
+
+    @EntityGraph(attributePaths = "car")
+    Optional<Rental> findByIdAndUserId(Long rentalId, Long userId);
 }

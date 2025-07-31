@@ -48,6 +48,26 @@ public class CustomGlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(PaymentProcessException.class)
+    public ResponseEntity<Object> handlePaymentProcessException(
+            PaymentProcessException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("error", "PaymentProcessException");
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(StripeSessionException.class)
+    public ResponseEntity<Object> handleStripeSessionException(
+            StripeSessionException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("error", "StripeSessionException");
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private String getErrorMessage(ObjectError objErr) {
         if (objErr instanceof FieldError fieldError) {
             String field = fieldError.getField();
