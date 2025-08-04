@@ -44,6 +44,8 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+    @Column(unique = true)
+    private String telegramChatId;
     @Column(nullable = false)
     private boolean isDeleted;
 

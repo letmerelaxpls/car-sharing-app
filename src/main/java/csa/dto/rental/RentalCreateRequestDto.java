@@ -17,7 +17,4 @@ public class RentalCreateRequestDto {
     @NotNull
     @Positive
     private Long carId;
-    @NotNull
-    @Positive
-    private Long userId;
 }

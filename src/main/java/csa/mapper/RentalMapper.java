@@ -4,9 +4,7 @@ import csa.config.MapperConfig;
 import csa.dto.rental.RentalCreateRequestDto;
 import csa.dto.rental.RentalResponseDto;
 import csa.dto.rental.RentalSetActualReturnDateDto;
-import csa.model.Car;
 import csa.model.Rental;
-import csa.model.User;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,17 +15,6 @@ public interface RentalMapper {
     @Mapping(target = "car", ignore = true)
     @Mapping(target = "user", ignore = true)
     Rental toModel(RentalCreateRequestDto requestDto);
-
-    @AfterMapping
-    default void setCarsAndUsers(
-            @MappingTarget Rental rental, RentalCreateRequestDto requestDto) {
-        Car car = new Car();
-        car.setId(requestDto.getCarId());
-        User user = new User();
-        user.setId(requestDto.getUserId());
-        rental.setCar(car);
-        rental.setUser(user);
-    }
 
     @Mapping(target = "carId", ignore = true)
     @Mapping(target = "userId", ignore = true)

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,10 +31,10 @@ public class RentalController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public RentalResponseDto addRental(
+    public RentalResponseDto addRental(Authentication authentication,
             @RequestBody @Valid RentalCreateRequestDto requestDto) {
-        return rentalService.save(requestDto);
+        Long userId = (Long) authentication.getPrincipal();
+        return rentalService.save(requestDto, userId);
     }
 
     @PostMapping("/{rentalId}/return")

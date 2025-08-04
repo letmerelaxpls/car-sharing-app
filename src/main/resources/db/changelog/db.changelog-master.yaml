@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/changes/05-create-rentals-table.yaml
   - include:
       file: db/changelog/changes/06-create-payments-table.yaml
+  - include:
+      file: db/changelog/changes/07-add-telegram_chat_id-column-to-users-table.yaml

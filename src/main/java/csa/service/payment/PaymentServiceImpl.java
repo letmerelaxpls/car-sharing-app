@@ -17,6 +17,7 @@ import csa.repository.PaymentRepository;
 import csa.repository.RentalRepository;
 import csa.service.payment.calculators.CalculatorFactory;
 import csa.service.stripe.StripePaymentService;
+import csa.service.telegram.NotificationService;
 import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,6 +34,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final StripePaymentService stripePaymentService;
     private final PaymentMapper paymentMapper;
     private final PaymentRepository paymentRepository;
+    private final NotificationService notificationService;
 
     @Override
     public Page<PaymentSummaryDto> findByUserId(Long userId, Pageable pageable) {
@@ -87,11 +89,13 @@ public class PaymentServiceImpl implements PaymentService {
                 new EntityNotFoundException("Could not find Payment with session id: "
                         + sessionId));
         if (!stripePaymentService.isSessionPaid(sessionId)) {
+            notificationService.sendFailedPaymentNotification(payment);
             throw new PaymentProcessException("Payment for session id: "
                     + sessionId + " is not successful!");
         }
         payment.setStatus(Status.PAID);
         paymentRepository.save(payment);
+        notificationService.sendSuccessfulPaymentNotification(payment);
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 public interface RentalService {
     RentalResponseDto findById(Long rentalId);
 
-    RentalResponseDto save(RentalCreateRequestDto requestDto);
+    RentalResponseDto save(RentalCreateRequestDto requestDto, Long userId);
 
     RentalResponseDto setActualReturnDate(Long rentalId, RentalSetActualReturnDateDto requestDto);
 

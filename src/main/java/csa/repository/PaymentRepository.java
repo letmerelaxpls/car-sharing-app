@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
+    @EntityGraph(attributePaths = "rental.user")
     Optional<Payment> findBySessionId(String sessionId);
 
     @EntityGraph(attributePaths = "rental.user")
