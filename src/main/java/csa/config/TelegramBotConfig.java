@@ -2,6 +2,7 @@ package csa.config;
 
 import csa.service.telegram.NotificationBot;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -14,6 +15,8 @@ public class TelegramBotConfig {
     private final NotificationBot notificationBot;
 
     @Bean
+    @ConditionalOnProperty(name = "telegrambots.enabled", havingValue = "true",
+            matchIfMissing = true)
     public TelegramBotsApi telegramBotsApi() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(notificationBot);
