@@ -19,6 +19,7 @@ public interface PaymentMapper {
 
     PaymentSummaryDto toSummaryDto(Payment payment);
 
+    @Mapping(target = "rentalId", source = "rental.id")
     PaymentDetailsDto toDetailsDto(Payment payment);
 
     @Mapping(target = "rental", ignore = true)

@@ -57,12 +57,7 @@ public class PaymentServiceImpl implements PaymentService {
         Rental rental = rentalRepository.findByIdAndUserId(requestDto.getRentalId(), userId)
                 .orElseThrow(() -> new EntityNotFoundException("Could not find Rental by id: "
                         + requestDto.getRentalId() + " and User id: " + userId));
-        PaymentType expectedPaymentType = determineType(rental);
-        if (!expectedPaymentType.equals(requestDto.getType())) {
-            throw new PaymentProcessException("Requested PaymentType " + requestDto.getType()
-                    + " is invalid! Expected: " + expectedPaymentType);
-        }
-
+        PaymentType paymentType = determineType(rental, requestDto);
         Payment payment = paymentRepository
                 .findByRentalIdAndRentalUserId(
                         requestDto.getRentalId(), userId)
@@ -73,7 +68,7 @@ public class PaymentServiceImpl implements PaymentService {
                     return p;
                 })
                 .orElseGet(() -> paymentMapper.toModel(requestDto));
-        BigDecimal amount = calculatorFactory.getCalculator(expectedPaymentType).calculate(rental);
+        BigDecimal amount = calculatorFactory.getCalculator(paymentType).calculate(rental);
         SessionCreateParams sessionCreateParams = stripePaymentService.createSessionParams(amount);
         Session session = stripePaymentService.makeSession(sessionCreateParams);
 
@@ -103,13 +98,23 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment = paymentRepository.findBySessionId(sessionId).orElseThrow(() ->
                 new EntityNotFoundException("Could not find Payment with session id: "
                         + sessionId));
+        if (Status.PENDING.equals(payment.getStatus())) {
+            payment.setStatus(Status.CANCELED);
+            paymentRepository.save(payment);
+            notificationService.sendCanceledPaymentNotification(payment);
+        }
     }
 
-    private PaymentType determineType(Rental rental) {
-        if (rental.getActualReturnDate().isAfter(rental.getReturnDate())) {
-            return PaymentType.FINE;
+    private PaymentType determineType(Rental rental, PaymentRequestDto requestDto) {
+        PaymentType paymentType;
+        paymentType = rental.getActualReturnDate().isAfter(rental.getReturnDate())
+                ? PaymentType.FINE
+                : PaymentType.PAYMENT;
+        if (!paymentType.equals(requestDto.getType())) {
+            throw new PaymentProcessException("Requested PaymentType " + requestDto.getType()
+                    + " is invalid! Expected: " + paymentType);
         }
-        return PaymentType.PAYMENT;
+        return paymentType;
     }
 
 }
