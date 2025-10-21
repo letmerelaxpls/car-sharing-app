@@ -9,6 +9,7 @@ import csa.model.enums.RoleName;
 import csa.repository.UserRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -30,20 +31,7 @@ public class NotificationServiceImpl implements NotificationService {
     private String adminChatId;
     private final RestTemplate restTemplate;
 
-    private void sendNotification(String message) {
-        String botUrl = TELEGRAM_API_URL + botToken + "/sendMessage";
-        Map<String, String> params = Map.of(
-                "chat_id", adminChatId,
-                "text", message
-        );
-        try {
-            restTemplate.postForEntity(botUrl, params, String.class);
-        } catch (Exception e) {
-            throw new TelegramProcessException("Could not send message to chat with id: "
-                    + adminChatId, e);
-        }
-    }
-
+    @Override
     public void sendNewRentalNotification(Rental rental) {
         String message = TelegramMessages.NEW_RENTAL.format(
                 rental.getUser().getId(),
@@ -82,11 +70,57 @@ public class NotificationServiceImpl implements NotificationService {
         sendNotification(message);
     }
 
+    @Override
+    public void sendCanceledPaymentNotification(Payment payment) {
+        String message = TelegramMessages.CANCEL_PAYMENT.format(
+                payment.getRental().getRentalDate());
+        sendNotification(message);
+    }
+
+    @Override
+    public void sendNoOverdueRentals() {
+        sendNotification(TelegramMessages.NO_OVERDUE_RENTALS.getText());
+    }
+
+    @Override
+    public void sendOverdueRentals(List<Rental> rentals) {
+        StringBuilder builder = new StringBuilder(
+                TelegramMessages.OVERDUE_RENTALS_HEADER
+                .format(rentals.size()));
+        rentals.forEach(rental -> {
+            builder.append("\n").append(
+                    TelegramMessages.OVERDUE_RENTALS.format(
+                            rental.getUser().getId(),
+                            rental.getCar().getModel(),
+                            rental.getCar().getBrand(),
+                            rental.getRentalDate(),
+                            rental.getReturnDate()
+                    ));
+        });
+        String message = builder.toString();
+        sendNotification(message);
+    }
+
+    @Override
     public SendMessage processMessage(Long chatId, String text) {
         if (TelegramMessages.START_MESSAGE.getText().equalsIgnoreCase(text)) {
             return sendMessage(chatId, TelegramMessages.GREETING_MESSAGE.getText());
         } else {
             return processEmailMessage(chatId, text);
+        }
+    }
+
+    private void sendNotification(String message) {
+        String botUrl = TELEGRAM_API_URL + botToken + "/sendMessage";
+        Map<String, String> params = Map.of(
+                "chat_id", adminChatId,
+                "text", message
+        );
+        try {
+            restTemplate.postForEntity(botUrl, params, String.class);
+        } catch (Exception e) {
+            throw new TelegramProcessException("Could not send message to chat with id: "
+                    + adminChatId, e);
         }
     }
 

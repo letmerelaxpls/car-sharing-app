@@ -12,6 +12,7 @@ public enum TelegramMessages {
     ALREADY_REGISTERED("This email is already registered for notifications!"),
     EMAIL_NOT_EXIST("User with this email doesn't exist in Car Sharing App!"),
     NOT_ALLOWED("You can't use this bot if you are not ADMIN"),
+    OVERDUE_RENTALS_HEADER("There are %s overdue Rentals!"),
     NEW_RENTAL("""
             New Rental has just been created!
             
@@ -23,8 +24,8 @@ public enum TelegramMessages {
     RETURNED_RENTAL("""
             Rental was returned!
             User id: %s
-            Rental return date: %s
-            Rental actual return date: %s
+            Return date: %s
+            Actual return date: %s
             Car model: %s
             Car brand: %s
             Remaining Car Inventory: %s"""),
@@ -37,7 +38,16 @@ public enum TelegramMessages {
     FAILED_PAYMENT("""
             Payment Failed!
             User id: %s
-            Payment type: %s""");
+            Payment type: %s"""),
+    CANCEL_PAYMENT("Your payment for Rental on %s was canceled!"),
+    NO_OVERDUE_RENTALS("No rentals overdue today!"),
+    OVERDUE_RENTALS("""
+    User id: %s
+    Car model: %s
+    Car brand: %s
+    Rental date: %s
+    Return date: %s
+    """);
 
     private final String text;
     TelegramMessages(String text) {
