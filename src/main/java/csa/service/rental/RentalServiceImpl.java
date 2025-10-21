@@ -16,6 +16,7 @@ import csa.service.telegram.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +29,14 @@ public class RentalServiceImpl implements RentalService {
     private final UserRepository userRepository;
     private final NotificationService notificationService;
 
-    public RentalResponseDto findById(Long rentalId) {
-        return rentalMapper.toDto(
-                rentalRepository.findWithCarAndUserById(rentalId).orElseThrow(() ->
-                        new EntityNotFoundException("Could not find Rental with id: "
-                                + rentalId)));
+    public RentalResponseDto findById(Long authUserId, Long rentalId, boolean isAdmin) {
+        Rental rental = rentalRepository.findWithCarAndUserById(rentalId).orElseThrow(() ->
+                new EntityNotFoundException("Could not find Rental with id: "
+                        + rentalId));
+        if (!isAdmin && !rental.getUser().getId().equals(authUserId)) {
+            throw new RentalException("You don`t have permission to view this rental.");
+        }
+        return rentalMapper.toDto(rental);
     }
 
     @Override
@@ -74,8 +78,12 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public Page<RentalResponseDto> findByUserId(Long userId, Boolean isActive, Pageable pageable) {
-        return rentalRepository.findAllByUserIdAndIsActive(userId, isActive, pageable)
-                .map(rentalMapper::toDto);
+    public Page<RentalResponseDto> findByUserId(Long authUserId, boolean isAdmin,
+                                                Long userId, Boolean isActive, Pageable pageable) {
+        if (!isAdmin && !authUserId.equals(userId)) {
+            throw new RentalException("You don`t have permission to view these rentals.");
+        }
+        return rentalRepository
+                .findAllByUserIdAndIsActive(userId, isActive, pageable).map(rentalMapper::toDto);
     }
 }

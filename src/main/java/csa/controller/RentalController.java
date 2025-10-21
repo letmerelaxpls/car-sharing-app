@@ -25,9 +25,12 @@ public class RentalController {
     private final RentalService rentalService;
 
     @GetMapping("/{rentalId}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public RentalResponseDto getRentalById(@PathVariable Long rentalId) {
-        return rentalService.findById(rentalId);
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
+    public RentalResponseDto getRentalById(Authentication authentication,
+                                           @PathVariable Long rentalId) {
+        Long authUserId = (Long) authentication.getPrincipal();
+        boolean isAdmin = isAdmin(authentication);
+        return rentalService.findById(authUserId, rentalId, isAdmin);
     }
 
     @PostMapping
@@ -46,9 +49,19 @@ public class RentalController {
     }
 
     @GetMapping("/byUser/{userId}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public Page<RentalResponseDto> getRentalByUserId(
-            @PathVariable Long userId, @RequestParam Boolean isActive, Pageable pageable) {
-        return rentalService.findByUserId(userId, isActive, pageable);
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
+    public Page<RentalResponseDto> getRentalByUserId(Authentication authentication,
+                                                     @PathVariable Long userId,
+                                                     @RequestParam Boolean isActive,
+                                                     Pageable pageable) {
+        Long authUserId = (Long) authentication.getPrincipal();
+        boolean isAdmin = isAdmin(authentication);
+        return rentalService.findByUserId(authUserId, isAdmin, userId, isActive, pageable);
+    }
+
+    private boolean isAdmin(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .anyMatch(r ->
+                        r.getAuthority().equals("ROLE_ADMIN"));
     }
 }

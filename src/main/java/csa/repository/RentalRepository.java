@@ -1,6 +1,8 @@
 package csa.repository;
 
 import csa.model.Rental;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,4 +27,9 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
 
     @EntityGraph(attributePaths = "car")
     Optional<Rental> findByIdAndUserId(Long rentalId, Long userId);
+
+    @EntityGraph(attributePaths = {"car", "user"})
+    List<Rental> findAllByReturnDateLessThanAndIsActiveTrue(LocalDate date);
+
+    boolean existsByIdAndUserId(Long rentalId, Long userId);
 }
