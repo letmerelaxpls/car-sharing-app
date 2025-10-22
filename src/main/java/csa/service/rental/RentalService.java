@@ -5,7 +5,6 @@ import csa.dto.rental.RentalResponseDto;
 import csa.dto.rental.RentalSetActualReturnDateDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 
 public interface RentalService {
     RentalResponseDto findById(Long authUserId, Long rentalId, boolean isAdmin);

@@ -2,8 +2,9 @@ package csa.controller;
 
 import static csa.util.AuthenticationTestUtil.createAuthentication;
 import static csa.util.RentalTestUtil.createActualReturnDateDto;
-import static csa.util.RentalTestUtil.createRentalRequestDto;
 import static csa.util.RentalTestUtil.createFirstRentalResponseDto;
+import static csa.util.RentalTestUtil.createRentalRequestDto;
+import static csa.util.RoleTestUtil.createAdminRole;
 import static csa.util.RoleTestUtil.createCustomerRole;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -13,7 +14,6 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -62,7 +62,6 @@ class RentalControllerTest {
 
     @Test
     @DisplayName("getRentalById should return correct RentalResponseDto")
-    @WithMockUser(roles = "ADMIN")
     @Sql(scripts = {"classpath:database/users/insert-2-users.sql",
             "classpath:database/cars/insert-2-cars.sql",
             "classpath:database/rentals/insert-3-rentals.sql"},
@@ -72,7 +71,11 @@ class RentalControllerTest {
             "classpath:database/users/delete-2-users.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getRentalById_RentalWithIdOne_True() throws Exception {
-        Long rentalId = 1L;
+        Long userId = 3L;
+        Authentication authentication = createAuthentication(userId, createCustomerRole());
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        SecurityContextHolder.setContext(context);
         RentalResponseDto expected = createFirstRentalResponseDto();
 
         MvcResult mvcResult = mockMvc.perform(get("/rentals/1")
@@ -128,7 +131,7 @@ class RentalControllerTest {
             "classpath:database/cars/delete-2-cars.sql",
             "classpath:database/users/delete-2-users.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    void setActualReturnDate_RentalWithId_True() throws Exception{
+    void setActualReturnDate_RentalWithId_True() throws Exception {
         RentalSetActualReturnDateDto requestDto = createActualReturnDateDto();
         String jsonRequestBody = objectMapper.writeValueAsString(requestDto);
 
@@ -146,7 +149,6 @@ class RentalControllerTest {
 
     @Test
     @DisplayName("getRentalByUserId should return correct Page of RentalResponseDto")
-    @WithMockUser(roles = "ADMIN")
     @Sql(scripts = {"classpath:database/users/insert-2-users.sql",
             "classpath:database/cars/insert-2-cars.sql",
             "classpath:database/rentals/insert-3-rentals.sql"},
@@ -157,6 +159,10 @@ class RentalControllerTest {
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getRentalByUserId_UserWithIdThreeAndRentalIsActive_True() throws Exception {
         Long userId = 3L;
+        Authentication authentication = createAuthentication(userId, createAdminRole());
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        SecurityContextHolder.setContext(context);
 
         MvcResult mvcResult = mockMvc.perform(get("/rentals/byUser/" + userId)
                         .param("isActive", "true")

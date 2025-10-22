@@ -34,7 +34,7 @@ class PaymentRepositoryTest {
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void findBySessionId_PaymentWithIdOne_True() {
         Long expectedId = 1L;
-        String sessionId = "dcba";
+        String sessionId = "session_id";
         Payment result = paymentRepository.findBySessionId(sessionId).get();
         assertEquals(expectedId, result.getId());
     }

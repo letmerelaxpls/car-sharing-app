@@ -2,9 +2,9 @@ package csa.service;
 
 import static csa.util.CarTestUtil.createCar;
 import static csa.util.RentalTestUtil.createActualReturnDateDto;
+import static csa.util.RentalTestUtil.createFirstRentalResponseDto;
 import static csa.util.RentalTestUtil.createRental;
 import static csa.util.RentalTestUtil.createRentalRequestDto;
-import static csa.util.RentalTestUtil.createFirstRentalResponseDto;
 import static csa.util.UserTestUtil.createCustomerUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
@@ -23,7 +23,6 @@ import csa.repository.RentalRepository;
 import csa.repository.UserRepository;
 import csa.service.rental.RentalServiceImpl;
 import csa.service.telegram.NotificationService;
-
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -80,7 +79,6 @@ class RentalServiceImplTest {
         User user = createCustomerUser();
         RentalCreateRequestDto requestDto = createRentalRequestDto();
         Rental rental = createRental();
-        int expectedInventory = car.getInventory() - 1;
         RentalResponseDto expected = createFirstRentalResponseDto();
 
         when(carRepository.findById(carId)).thenReturn(Optional.of(car));
@@ -90,6 +88,7 @@ class RentalServiceImplTest {
         doNothing().when(notificationService).sendNewRentalNotification(rental);
         when(rentalMapper.toDto(rental)).thenReturn(expected);
         RentalResponseDto result = rentalService.save(requestDto, userId);
+        int expectedInventory = 4;
 
         assertEquals(expectedInventory, car.getInventory());
         assertEquals(expected, result);
@@ -106,11 +105,9 @@ class RentalServiceImplTest {
     void setActualReturnDate_RentalWithCorrectActualReturnDate_True() {
         Long rentalId = 1L;
         Rental rental = createRental();
-        Car car  = createCar();
+        Car car = createCar();
         rental.setCar(car);
         RentalSetActualReturnDateDto requestDto = createActualReturnDateDto();
-        int expectedInventory = car.getInventory() + 1;
-        boolean expectedIsActive = false;
         RentalResponseDto expectedDto = createFirstRentalResponseDto();
 
         when(rentalRepository.findWithCarById(rentalId)).thenReturn(Optional.of(rental));
@@ -119,6 +116,8 @@ class RentalServiceImplTest {
         doNothing().when(notificationService).sendReturnedRentalNotification(rental);
         when(rentalMapper.toDto(rental)).thenReturn(expectedDto);
         RentalResponseDto result = rentalService.setActualReturnDate(rentalId, requestDto);
+        int expectedInventory = 6;
+        boolean expectedIsActive = false;
 
         assertEquals(expectedInventory, car.getInventory());
         assertEquals(expectedIsActive, rental.getIsActive());
@@ -144,7 +143,6 @@ class RentalServiceImplTest {
         RentalResponseDto firstDto = createFirstRentalResponseDto();
         RentalResponseDto secondDto = createFirstRentalResponseDto();
         List<RentalResponseDto> dtos = List.of(firstDto, secondDto);
-        Page<RentalResponseDto> expectedPage = new PageImpl<>(dtos, pageable, 2);
 
         when(rentalRepository.findAllByUserIdAndIsActive(userId, isActive, pageable))
                 .thenReturn(rentals);
@@ -152,6 +150,7 @@ class RentalServiceImplTest {
         when(rentalMapper.toDto(rentalList.get(1))).thenReturn(dtos.get(1));
         Page<RentalResponseDto> result = rentalService.findByUserId(userId, isAdmin,
                 userId, isActive, pageable);
+        Page<RentalResponseDto> expectedPage = new PageImpl<>(dtos, pageable, 2);
 
         assertEquals(expectedPage, result);
         verify(rentalRepository).findAllByUserIdAndIsActive(userId, isActive, pageable);

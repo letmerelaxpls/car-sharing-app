@@ -1,12 +1,12 @@
 package csa.service.telegram;
 
 import static csa.util.PaymentTestUtil.createPayment;
+import static csa.util.RentalTestUtil.createRental;
 import static csa.util.UserTestUtil.createAdminUser;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
-import static csa.util.RentalTestUtil.createRental;
 import static org.mockito.Mockito.when;
 
 import csa.dto.user.UserEmailRequestDto;
@@ -33,7 +33,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 @ExtendWith(MockitoExtension.class)
 class NotificationServiceImplTest {
-    private final String TELEGRAM_API_URL =
+    private static final String TELEGRAM_API_URL =
             "https://api.telegram.org/botTEST_TOKEN/sendMessage";
     private final String adminChatId = "TEST_ID";
     @Mock
@@ -167,11 +167,11 @@ class NotificationServiceImplTest {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
         SendMessage result = notificationService.processMessage(chatId, user.getEmail());
-        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
 
         assertEquals(TelegramMessages.VALID_EMAIL_MESSAGE.getText(), result.getText());
         verify(validator).validate(any(UserEmailRequestDto.class));
         verify(userRepository).findByEmail(user.getEmail());
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(captor.capture());
         assertEquals(chatId.toString(), captor.getValue().getTelegramChatId());
     }

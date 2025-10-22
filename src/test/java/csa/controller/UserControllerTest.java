@@ -127,5 +127,4 @@ class UserControllerTest {
 
         assertEquals(expected, result);
     }
-
 }

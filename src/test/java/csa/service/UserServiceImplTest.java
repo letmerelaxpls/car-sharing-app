@@ -131,5 +131,4 @@ class UserServiceImplTest {
         verify(roleRepository).findByNameIn(requestDto.getRoles());
         verify(userMapper).toDtoWithRoles(user);
     }
-
 }

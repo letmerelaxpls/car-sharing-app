@@ -80,12 +80,12 @@ class PaymentServiceImplTest {
         PaymentSummaryDto firstDto = createPaymentSummaryDto();
         PaymentSummaryDto secondDto = createPaymentSummaryDto();
         List<PaymentSummaryDto> summaryDtos = List.of(firstDto, secondDto);
-        Page<PaymentSummaryDto> expected = new PageImpl<>(summaryDtos, pageable, 2);
 
         when(paymentRepository.findByRentalUserId(userId, pageable)).thenReturn(payments);
         when(paymentMapper.toSummaryDto(paymentList.get(0))).thenReturn(summaryDtos.get(0));
         when(paymentMapper.toSummaryDto(paymentList.get(1))).thenReturn(summaryDtos.get(1));
         Page<PaymentSummaryDto> result = paymentService.findByUserId(userId, pageable);
+        Page<PaymentSummaryDto> expected = new PageImpl<>(summaryDtos, pageable, 2);
 
         assertEquals(expected, result);
         verify(paymentRepository).findByRentalUserId(userId, pageable);

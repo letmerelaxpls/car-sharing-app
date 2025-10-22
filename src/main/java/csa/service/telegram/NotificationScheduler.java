@@ -14,7 +14,7 @@ public class NotificationScheduler {
     private final RentalRepository rentalRepository;
     private final NotificationService notificationService;
 
-    @Scheduled(cron = "0 0 12 * * *", zone = "Europe/Kyiv")
+    @Scheduled(cron = "0 0 12 * * *", zone = "Europe/Kiev")
     public void notifyAboutOverdueRentals() {
         List<Rental> rentals = rentalRepository
                 .findAllByReturnDateLessThanAndIsActiveTrue(LocalDate.now()

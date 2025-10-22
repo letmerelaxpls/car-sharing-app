@@ -101,8 +101,6 @@ class CarServiceImplTest {
     @Test
     @DisplayName("update should return correct Car dto")
     void update_CarCreateRequestDtoChangeModel_True() {
-        Long id = 1L;
-        Car car = createCar();
         Car changedCar = createCar();
         String newModel = "newModel";
         changedCar.setModel(newModel);
@@ -110,6 +108,8 @@ class CarServiceImplTest {
         requestDto.setModel(newModel);
         CarInfoResponseDto expected = createCarInfoResponseDto();
         expected.setModel(newModel);
+        Car car = createCar();
+        Long id = 1L;
 
         when(carRepository.findById(id)).thenReturn(Optional.of(car));
         doNothing().when(carMapper).updateFromDto(car, requestDto);
@@ -133,5 +133,4 @@ class CarServiceImplTest {
 
         verify(carRepository).deleteById(id);
     }
-
 }
