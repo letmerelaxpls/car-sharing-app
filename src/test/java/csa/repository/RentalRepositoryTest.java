@@ -30,7 +30,7 @@ class RentalRepositoryTest {
             "classpath:database/users/insert-2-users.sql",
             "classpath:database/rentals/insert-3-rentals.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"classpath:database/rentals/delete-3-rentals.sql",
+    @Sql(scripts = {"classpath:database/rentals/delete-all-rentals.sql",
             "classpath:database/users/delete-2-users.sql",
             "classpath:database/cars/delete-2-cars.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -52,7 +52,7 @@ class RentalRepositoryTest {
             "classpath:database/cars/insert-2-cars.sql",
             "classpath:database/rentals/insert-3-rentals.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"classpath:database/rentals/delete-3-rentals.sql",
+    @Sql(scripts = {"classpath:database/rentals/delete-all-rentals.sql",
             "classpath:database/cars/delete-2-cars.sql",
             "classpath:database/users/delete-2-users.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -74,7 +74,7 @@ class RentalRepositoryTest {
             "classpath:database/cars/insert-2-cars.sql",
             "classpath:database/rentals/insert-3-rentals.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"classpath:database/rentals/delete-3-rentals.sql",
+    @Sql(scripts = {"classpath:database/rentals/delete-all-rentals.sql",
             "classpath:database/cars/delete-2-cars.sql",
             "classpath:database/users/delete-2-users.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)

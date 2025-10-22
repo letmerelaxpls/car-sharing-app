@@ -56,7 +56,7 @@ import org.springframework.web.context.WebApplicationContext;
         "classpath:database/payments/insert-2-payments.sql"},
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = {"classpath:database/payments/delete-2-payments.sql",
-        "classpath:database/rentals/delete-3-rentals.sql",
+        "classpath:database/rentals/delete-all-rentals.sql",
         "classpath:database/users/delete-2-users.sql",
         "classpath:database/cars/delete-2-cars.sql"},
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)

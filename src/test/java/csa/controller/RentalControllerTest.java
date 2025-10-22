@@ -6,6 +6,7 @@ import static csa.util.RentalTestUtil.createFirstRentalResponseDto;
 import static csa.util.RentalTestUtil.createRentalRequestDto;
 import static csa.util.RoleTestUtil.createAdminRole;
 import static csa.util.RoleTestUtil.createCustomerRole;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -66,7 +67,7 @@ class RentalControllerTest {
             "classpath:database/cars/insert-2-cars.sql",
             "classpath:database/rentals/insert-3-rentals.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"classpath:database/rentals/delete-3-rentals.sql",
+    @Sql(scripts = {"classpath:database/rentals/delete-all-rentals.sql",
             "classpath:database/cars/delete-2-cars.sql",
             "classpath:database/users/delete-2-users.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -93,7 +94,7 @@ class RentalControllerTest {
     @Sql(scripts = {"classpath:database/users/insert-2-users.sql",
             "classpath:database/cars/insert-2-cars.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"classpath:database/rentals/delete-3-rentals.sql",
+    @Sql(scripts = {"classpath:database/rentals/delete-all-rentals.sql",
             "classpath:database/cars/delete-2-cars.sql",
             "classpath:database/users/delete-2-users.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -116,7 +117,10 @@ class RentalControllerTest {
         RentalResponseDto result = objectMapper.readValue(
                 mvcResult.getResponse().getContentAsString(), RentalResponseDto.class);
 
-        assertEquals(expected, result);
+        assertThat(result)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(expected);
         verify(notificationService).sendNewRentalNotification(any());
     }
 
@@ -127,7 +131,7 @@ class RentalControllerTest {
             "classpath:database/cars/insert-2-cars.sql",
             "classpath:database/rentals/insert-3-rentals.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"classpath:database/rentals/delete-3-rentals.sql",
+    @Sql(scripts = {"classpath:database/rentals/delete-all-rentals.sql",
             "classpath:database/cars/delete-2-cars.sql",
             "classpath:database/users/delete-2-users.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -153,7 +157,7 @@ class RentalControllerTest {
             "classpath:database/cars/insert-2-cars.sql",
             "classpath:database/rentals/insert-3-rentals.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"classpath:database/rentals/delete-3-rentals.sql",
+    @Sql(scripts = {"classpath:database/rentals/delete-all-rentals.sql",
             "classpath:database/cars/delete-2-cars.sql",
             "classpath:database/users/delete-2-users.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)

@@ -1,5 +1,5 @@
 DELETE FROM users_roles
-WHERE user_id IN(3, 4);
+WHERE user_id > 2;
 
 DELETE FROM users
-WHERE id IN(3, 4);
+WHERE id > 2;

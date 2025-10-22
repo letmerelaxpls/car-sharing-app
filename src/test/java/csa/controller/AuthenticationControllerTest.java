@@ -33,6 +33,8 @@ import org.springframework.web.context.WebApplicationContext;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(scripts = "classpath:database/users/delete-2-users.sql",
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = "classpath:database/users/delete-2-users.sql",
+        executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class AuthenticationControllerTest {
     private MockMvc mockMvc;
     @Autowired
