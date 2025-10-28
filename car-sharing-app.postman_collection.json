@@ -1,0 +1,211 @@
+{
+  "info": {
+    "_postman_id": "csa-generated-collection-001",
+    "name": "Car Sharing App",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register new user",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@email.com\",\n  \"password\": \"12345678\",\n  \"repeatedPassword\": \"12345678\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/register"
+          }
+        },
+        {
+          "name": "Login user",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@email.com\",\n  \"password\": \"12345678\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/login"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get current user info",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
+            "method": "GET",
+            "url": "{{baseUrl}}/users/me"
+          }
+        },
+        {
+          "name": "Update user info",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Updated\",\n  \"lastName\": \"User\",\n  \"telegramChatId\": \"123456789\"\n}"
+            },
+            "url": "{{baseUrl}}/users/me"
+          }
+        },
+        {
+          "name": "Get all users (ADMIN)",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
+            "method": "GET",
+            "url": "{{baseUrl}}/users"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cars",
+      "item": [
+        {
+          "name": "Add car (ADMIN)",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand\": \"BMW\",\n  \"model\": \"X5\",\n  \"type\": \"SUV\",\n  \"inventory\": 5,\n  \"dailyFee\": 150.0\n}"
+            },
+            "url": "{{baseUrl}}/cars"
+          }
+        },
+        {
+          "name": "Get all cars",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/cars"
+          }
+        },
+        {
+          "name": "Get car by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/cars/1"
+          }
+        },
+        {
+          "name": "Update car (ADMIN)",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand\": \"BMW\",\n  \"model\": \"X6\",\n  \"type\": \"SUV\",\n  \"inventory\": 3,\n  \"dailyFee\": 200.0\n}"
+            },
+            "url": "{{baseUrl}}/cars/1"
+          }
+        },
+        {
+          "name": "Delete car (ADMIN)",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
+            "method": "DELETE",
+            "url": "{{baseUrl}}/cars/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rentals",
+      "item": [
+        {
+          "name": "Create rental",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"carId\": 1,\n  \"returnDate\": \"2025-12-01\"\n}"
+            },
+            "url": "{{baseUrl}}/rentals"
+          }
+        },
+        {
+          "name": "Get rental by ID",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
+            "method": "GET",
+            "url": "{{baseUrl}}/rentals/1"
+          }
+        },
+        {
+          "name": "Get my rentals",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
+            "method": "GET",
+            "url": "{{baseUrl}}/rentals/my"
+          }
+        },
+        {
+          "name": "Return rental",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
+            "method": "PUT",
+            "url": "{{baseUrl}}/rentals/1/return"
+          }
+        },
+        {
+          "name": "Delete rental",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
+            "method": "DELETE",
+            "url": "{{baseUrl}}/rentals/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Create Stripe session",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rentalId\": 1\n}"
+            },
+            "url": "{{baseUrl}}/payments/session"
+          }
+        },
+        {
+          "name": "Payment success",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/payments/success?session_id=example_session"
+          }
+        },
+        {
+          "name": "Payment cancel",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/payments/cancel?session_id=example_session"
+          }
+        }
+      ]
+    }
+  ]
+}
