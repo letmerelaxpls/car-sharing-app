@@ -1,4 +1,4 @@
-# 🚗 Car Sharing App
+# 🏎️ Car Sharing App
 
 **Car Sharing App** is a scalable backend system built to support a modern car sharing platform.  
 Developed with **Java** and **Spring Boot**, it provides a solid foundation for vehicle rentals, user authentication, payment handling through **Stripe**, and real-time notifications via **Telegram**.
@@ -10,6 +10,7 @@ Developed with **Java** and **Spring Boot**, it provides a solid foundation for 
 - [Key Technologies](#key-technologies)  
 - [Architecture Overview](#architecture-overview)
 - [List of Controllers](#list-of-controllers)
+- [Database Schema Relationship Diagram](#database-schema-relationship-diagram)
 - [Fork and Clone the Project on GitHub](#fork-and-clone-the-project-on-github)
 - [How to Launch the Application](#how-to-launch-the-application)
 - [All Postman Collections](#all-postman-collections)
@@ -113,6 +114,14 @@ The backend exposes several REST endpoints grouped by responsibility.
 
 ---
 
+## Database Schema Relationship Diagram
+
+![schema](relationship-model-diagram.png)
+
+[Back to Table of Contents](#table-of-contents)
+
+---
+
 ## Fork and Clone the Project on GitHub
 
 Forking creates a personal copy of someone else's repository under your GitHub account.
@@ -181,3 +190,7 @@ http://localhost:8080/swagger-ui/index.html
 ## All Postman Collections
 
 You can import the prepared Postman collection to quickly test all API endpoints.
+
+[Postman collections](car-sharing-app.postman_collection.json)
+
+[Back to Table of Contents](#table-of-contents)
