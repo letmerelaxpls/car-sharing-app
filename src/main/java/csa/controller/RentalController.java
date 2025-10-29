@@ -4,6 +4,8 @@ import csa.dto.rental.RentalCreateRequestDto;
 import csa.dto.rental.RentalResponseDto;
 import csa.dto.rental.RentalSetActualReturnDateDto;
 import csa.service.rental.RentalService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,12 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Rental", description = "Endpoints for managing rentals")
 @RestController
 @RequestMapping("/rentals")
 @RequiredArgsConstructor
 public class RentalController {
     private final RentalService rentalService;
 
+    @Operation(summary = "View rental",
+            description = "Endpoint for retrieving a specific rental")
     @GetMapping("/{rentalId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
     public RentalResponseDto getRentalById(Authentication authentication,
@@ -33,6 +38,8 @@ public class RentalController {
         return rentalService.findById(authUserId, rentalId, isAdmin);
     }
 
+    @Operation(summary = "Add rental",
+            description = "Endpoint for creating a new rental")
     @PostMapping
     public RentalResponseDto addRental(Authentication authentication,
             @RequestBody @Valid RentalCreateRequestDto requestDto) {
@@ -40,6 +47,8 @@ public class RentalController {
         return rentalService.save(requestDto, userId);
     }
 
+    @Operation(summary = "Set actual return date",
+            description = "Endpoint for setting a specific rental`s actual return date")
     @PostMapping("/{rentalId}/return")
     @PreAuthorize("hasRole('ADMIN')")
     public RentalResponseDto setActualReturnDate(
@@ -48,6 +57,8 @@ public class RentalController {
         return rentalService.setActualReturnDate(rentalId, requestDto);
     }
 
+    @Operation(summary = "View user rentals",
+            description = "Endpoint for retrieving a list of rentals of specific user")
     @GetMapping("/byUser/{userId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
     public Page<RentalResponseDto> getRentalByUserId(Authentication authentication,
