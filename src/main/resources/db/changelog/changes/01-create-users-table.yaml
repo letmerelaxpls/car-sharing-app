@@ -1,0 +1,79 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01-create-users-table
+      author: letmerelax
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: first_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_deleted
+                  type: bit
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: email
+                  value: admin@gmail.com
+              - column:
+                  name: first_name
+                  value: admin
+              - column:
+                  name: last_name
+                  value: admin
+              - column:
+                  name: password
+                  value: $2b$10$HzoRsZJma2VohaveJHIi5eVcHITM54BUEMxFh5cJGovl6KkF5ldYW
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 2
+              - column:
+                  name: email
+                  value: customer@gmail.com
+              - column:
+                  name: first_name
+                  value: customer
+              - column:
+                  name: last_name
+                  value: customer
+              - column:
+                  name: password
+                  value: $2b$10$HzoRsZJma2VohaveJHIi5eVcHITM54BUEMxFh5cJGovl6KkF5ldYW

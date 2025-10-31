@@ -1,0 +1,2 @@
+DELETE FROM cars
+WHERE id IN(4, 5);

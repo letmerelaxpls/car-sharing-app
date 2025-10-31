@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 07-add-telegram_chat_id-to-users-table
+      author: letmerelaxpls
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: telegram_chat_id
+                  type: varchar(255)
+                  constraints:
+                    unique: true
