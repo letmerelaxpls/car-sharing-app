@@ -126,7 +126,7 @@ The backend exposes several REST endpoints grouped by responsibility.
 
 Forking creates a personal copy of someone else's repository under your GitHub account.
 
-- [Go to the GitHub page of the repository you want to fork](https://github.com/StarAntonU/car-sharing)
+- [Go to the GitHub page of the repository you want to fork](https://github.com/letmerelaxpls/car-sharing-app)
 - Click the "Fork" button in the upper-right corner
 - Select your GitHub account (or organization) to create the fork
 
